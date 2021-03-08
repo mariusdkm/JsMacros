@@ -44,7 +44,7 @@ class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
         super.setAir(air);
     }
     
-    @Inject(at = @At("HEAD"), method="setExperience")
+    @Inject(at = @At("HEAD"), method="method_3145")
     public void onSetExperience(float progress, int total, int level, CallbackInfo info) {
         new EventEXPChange(progress, total, level);
     }

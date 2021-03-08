@@ -1,6 +1,6 @@
 package xyz.wagyourtail.jsmacros.client.gui.containers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.text.LiteralText;
@@ -15,7 +15,6 @@ import xyz.wagyourtail.jsmacros.core.config.ScriptTrigger;
 
 import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MacroContainer extends MultiElementContainer<MacroScreen> {
     private static final Identifier key_down_tex = new Identifier(JsMacros.MOD_ID, "resources/key_down.png");
@@ -165,9 +164,9 @@ public class MacroContainer extends MultiElementContainer<MacroScreen> {
                     this.mc.getTextureManager().bindTexture(key_both_tex);
                     break;
                 }
-                RenderSystem.enableBlend();
+                GlStateManager.enableBlend();
                 blit(x + w / 4 - height + 2, y + 2, height-4, height-4, 0, 0, 32, 32, 32, 32);
-                RenderSystem.disableBlend();
+                GlStateManager.disableBlend();
             }
             
             // border
