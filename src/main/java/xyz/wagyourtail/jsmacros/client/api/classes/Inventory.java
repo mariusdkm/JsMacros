@@ -356,7 +356,7 @@ public class Inventory<T extends HandledScreen<?>> {
             } else if (inventory instanceof HorseScreen) {
                 HorseBaseEntity h = (HorseBaseEntity) ((IHorseScreen)this.inventory).jsmacros_getEntity();
                 if (h.canBeSaddled()) map.put("saddle", new int[] {0});
-                if (h.hasArmorSlot()) map.put("armor", new int[] {1});
+                if (h.canEquip()) map.put("armor", new int[] {1});
                 if (h instanceof AbstractDonkeyEntity && ((AbstractDonkeyEntity) h).hasChest()) {
                     map.put("container", JsMacros.range(2, slots - 9 - 27));
                 }

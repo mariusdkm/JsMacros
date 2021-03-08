@@ -5,10 +5,8 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.StringVisitable;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
-import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import xyz.wagyourtail.jsmacros.client.JsMacros;
@@ -24,8 +22,8 @@ public abstract class BaseScreen extends Screen implements IOverlayParent {
         this.parent = parent;
     }
     
-    public static OrderedText trimmed(TextRenderer textRenderer, StringVisitable str, int width) {
-        return Language.getInstance().reorder(textRenderer.trimToWidth(str,width));
+    public static StringRenderable trimmed(TextRenderer textRenderer, StringRenderable str, int width) {
+        return textRenderer.trimToWidth(str,width);
     }
     
     public void reload() {
@@ -40,13 +38,13 @@ public abstract class BaseScreen extends Screen implements IOverlayParent {
         children.clear();
         overlay = null;
         JsMacros.prevScreen = this;
-        client.keyboard.setRepeatEvents(true);
+        client.keyboard.enableRepeatEvents(true);
     }
 
     @Override
     public void removed() {
         assert client != null;
-        client.keyboard.setRepeatEvents(false);
+        client.keyboard.enableRepeatEvents(false);
     }
     
     @Override

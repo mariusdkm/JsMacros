@@ -168,7 +168,7 @@ public class FChat extends BaseLibrary {
         if (t != null) {
             Text titlee = (title instanceof TextHelper) ? ((TextHelper) title).getRaw() : title != null ? new LiteralText(title.toString()) : null;
             Text descc = (desc instanceof TextHelper) ? ((TextHelper) desc).getRaw() : desc != null ? new LiteralText(desc.toString()) : null;
-            if (titlee != null) t.add(SystemToast.create(mc, null, titlee, descc));
+            if (titlee != null) t.add(SystemToast.method_29047(mc, null, titlee, descc));
         }
     }
     

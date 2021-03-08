@@ -45,7 +45,7 @@ public class VillagerInventory extends Inventory<MerchantScreen> {
      * @return
      */
     public int getMerchantRewardedExperience() {
-        return inventory.getScreenHandler().getMerchantRewardedExperience();
+        return inventory.getScreenHandler().getTraderRewardedExperience();
     }
     
     /**

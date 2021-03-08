@@ -3,7 +3,7 @@ package xyz.wagyourtail.jsmacros.client.gui.elements;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.AbstractPressableButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.OrderedText;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class Button extends AbstractPressableButtonWidget {
     protected int borderColor;
     protected int hilightColor;
     protected int textColor;
-    protected List<OrderedText> textLines;
+    protected List<StringRenderable> textLines;
     protected int visibleLines;
     protected int verticalCenter;
     public boolean horizCenter = true;

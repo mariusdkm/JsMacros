@@ -2,7 +2,7 @@ package xyz.wagyourtail.jsmacros.client.gui.overlays;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.OrderedText;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import xyz.wagyourtail.jsmacros.client.gui.elements.Button;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class ConfirmOverlay extends OverlayContainer {
     private final Consumer<ConfirmOverlay> accept;
-    private List<OrderedText> text;
+    private List<StringRenderable> text;
     private int lines;
     public boolean hcenter = true;
     private int vcenter;

@@ -108,7 +108,7 @@ public class TextBuilder {
      * @return
      */
     public TextBuilder withShowTextHover(TextHelper text) {
-        self.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, text.getRaw())));
+        self.styled(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, text.getRaw())));
         return this;
     }
     
@@ -119,7 +119,7 @@ public class TextBuilder {
      * @return
      */
     public TextBuilder withShowItemHover(ItemStackHelper item) {
-        self.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackContent(item.getRaw()))));
+        self.styled(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackContent(item.getRaw()))));
         return this;
     }
     
@@ -131,7 +131,7 @@ public class TextBuilder {
      */
     public TextBuilder withShowEntityHover(EntityHelper<Entity> entity) {
         Entity raw = entity.getRaw();
-        self.styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, new HoverEvent.EntityContent(raw.getType(), raw.getUuid(), raw.getName()))));
+        self.styled(style -> style.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ENTITY, new HoverEvent.EntityContent(raw.getType(), raw.getUuid(), raw.getName()))));
         return this;
     }
     

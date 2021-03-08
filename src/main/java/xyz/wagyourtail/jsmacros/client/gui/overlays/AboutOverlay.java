@@ -3,7 +3,7 @@ package xyz.wagyourtail.jsmacros.client.gui.overlays;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.OrderedText;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
@@ -12,7 +12,7 @@ import xyz.wagyourtail.jsmacros.client.gui.elements.Button;
 import java.util.List;
 
 public class AboutOverlay extends OverlayContainer {
-    private List<OrderedText> text;
+    private List<StringRenderable> text;
     private int lines;
     private int vcenter;
 

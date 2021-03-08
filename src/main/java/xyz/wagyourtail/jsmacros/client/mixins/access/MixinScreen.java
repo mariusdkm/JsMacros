@@ -480,7 +480,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
         synchronized (elements) {
         elements.clear();
         }
-        client.keyboard.setRepeatEvents(true);
+        client.keyboard.enableRepeatEvents(true);
         if (onInit != null) {
             try {
                 onInit.accept(this);

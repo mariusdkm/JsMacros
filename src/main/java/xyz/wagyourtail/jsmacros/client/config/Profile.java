@@ -115,7 +115,7 @@ public class Profile extends BaseProfile {
                 Style locationStyle = Style.EMPTY.withColor(Formatting.GOLD);
                 if (head.location instanceof BaseWrappedException.GuestLocation) {
                     BaseWrappedException.GuestLocation loc = (BaseWrappedException.GuestLocation) head.location;
-                    locationStyle = locationStyle.withHoverEvent(
+                    locationStyle = locationStyle.setHoverEvent(
                         new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableText("jsmacros.clicktoview"))
                     ).withClickEvent(new CustomClickEvent(() -> {
                         if (loc.startIndex > -1) {

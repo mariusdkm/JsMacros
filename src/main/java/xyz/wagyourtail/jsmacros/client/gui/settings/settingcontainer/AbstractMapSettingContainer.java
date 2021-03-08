@@ -4,7 +4,8 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.OrderedText;
+import net.minecraft.text.StringRenderable;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import xyz.wagyourtail.jsmacros.client.gui.containers.MultiElementContainer;
 import xyz.wagyourtail.jsmacros.client.gui.elements.Button;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractMapSettingContainer<T, U extends AbstractMapSettingContainer.MapSettingEntry<T>> extends AbstractSettingContainer {
     public SettingsOverlay.SettingField<Map<String, T>> setting;
-    public OrderedText settingName;
+    public StringRenderable settingName;
     public final Map<String, U> map = new HashMap<>();
     public int topScroll = 0;
     public int totalHeight = 0;

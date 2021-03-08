@@ -5,6 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.options.CloudRenderMode;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.GraphicsMode;
+import net.minecraft.client.resource.ClientResourcePackProfile;
 import net.minecraft.client.util.Window;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.resource.ResourcePackProfile;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 public class OptionsHelper extends BaseHelper<GameOptions> {
     private static final Map<String, SoundCategory> SOUND_CATEGORY_MAP = Arrays.stream(SoundCategory.values()).collect(Collectors.toMap(SoundCategory::getName, Function.identity()));
     private final MinecraftClient mc = MinecraftClient.getInstance();
-    private final ResourcePackManager rpm = mc.getResourcePackManager();
+    private final ResourcePackManager<ClientResourcePackProfile> rpm = mc.getResourcePackManager();
     
     public OptionsHelper(GameOptions options) {
         super(options);

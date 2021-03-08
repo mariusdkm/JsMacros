@@ -10,7 +10,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -35,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditorScreen extends BaseScreen {
-    private static final OrderedText ellipses = new LiteralText("...").formatted(Formatting.DARK_GRAY).asOrderedText();
+    private static final Text ellipses = new LiteralText("...").formatted(Formatting.DARK_GRAY);
     public static final List<String> langs = Lists.newArrayList("javascript", "json", "lua", "python", "ruby", "typescript");
     public static Style defaultStyle = Style.EMPTY.withFont(new Identifier("jsmacros", "ubuntumono"));
     protected final File file;
@@ -631,13 +630,13 @@ public class EditorScreen extends BaseScreen {
         super.render(matrices, mouseX, mouseY, delta);
     }
     
-    private OrderedText trim(Text text) {
+    private StringRenderable trim(Text text) {
         assert client != null;
         if (client.textRenderer.getWidth(text) > width - 30) {
-            OrderedText trimmed = Language.getInstance().reorder(client.textRenderer.trimToWidth(text, width - 40 - ellipsesWidth));
-            return OrderedText.concat(trimmed, ellipses);
+            StringRenderable trimmed = client.textRenderer.trimToWidth(text, width - 40 - ellipsesWidth);
+            return StringRenderable.concat(trimmed, ellipses);
         } else {
-            return text.asOrderedText();
+            return text;
         }
     }
     
