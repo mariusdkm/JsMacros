@@ -1,7 +1,7 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
-import net.minecraft.client.gui.screen.ingame.MerchantScreen;
-import net.minecraft.village.TradeOffer;
+import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.village.MerchantRecipe;
 import xyz.wagyourtail.jsmacros.client.access.IMerchantScreen;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TradeOfferHelper;
 
@@ -9,9 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class VillagerInventory extends Inventory<MerchantScreen> {
+public class VillagerInventory extends Inventory<GuiMerchant> {
     
-    protected VillagerInventory(MerchantScreen inventory) {
+    protected VillagerInventory(GuiMerchant inventory) {
         super(inventory);
     }
     
@@ -31,35 +31,35 @@ public class VillagerInventory extends Inventory<MerchantScreen> {
      * @return
      */
     public int getExperience() {
-        return inventory.getContainer().getExperience();
+        return 0;
     }
     
     /**
      * @return
      */
     public int getLevelProgress() {
-        return inventory.getContainer().getLevelProgress();
+        return 0;
     }
     
     /**
      * @return
      */
     public int getMerchantRewardedExperience() {
-        return inventory.getContainer().getTraderRewardedExperience();
+        return 0;
     }
     
     /**
      * @return
      */
     public boolean canRefreshTrades() {
-        return inventory.getContainer().canRefreshTrades();
+        return false;
     }
     
     /**
      * @return
      */
     public boolean isLeveled() {
-        return inventory.getContainer().isLevelled();
+        return false;
     }
     
     /**
@@ -68,7 +68,7 @@ public class VillagerInventory extends Inventory<MerchantScreen> {
     public List<TradeOfferHelper> getTrades() {
         List<TradeOfferHelper> offers = new LinkedList<>();
         int i = -1;
-        for (TradeOffer offer : inventory.getContainer().getRecipes()) {
+        for (MerchantRecipe offer : inventory.getMerchant().getRecipes(mc.thePlayer)) {
             offers.add(new TradeOfferHelper(offer, ++i, this));
         }
         return offers;

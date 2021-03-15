@@ -175,7 +175,7 @@ public class Main {
                 if (mappingViewerBaseURL != null) {
                     reporter.printError("mc version set more than once");
                 }
-                mappingViewerBaseURL = "https://wagyourtail.xyz/Projects/Minecraft%20Mappings%20Viewer/App?mapping=yarn,yarnIntermediary&version=" + option[1] + "&search=";
+                mappingViewerBaseURL = "https://wagyourtail.xyz/Projects/Minecraft%20Mappings%20Viewer/App?mapping=mcp,srg&version=" + option[1] + "&search=";
             }
         }
         return true;

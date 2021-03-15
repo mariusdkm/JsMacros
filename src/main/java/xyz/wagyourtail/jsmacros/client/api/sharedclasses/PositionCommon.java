@@ -1,6 +1,6 @@
 package xyz.wagyourtail.jsmacros.client.api.sharedclasses;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.MathHelper;
 
 /**
  * @author Wagyourtail
@@ -243,13 +243,13 @@ public class PositionCommon {
             double dy = y2 - y1;
             double dz = z2 - z1;
             double xz = Math.sqrt(dx*dx + dz*dz);
-            return  90F - (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(xz, -dy)));
+            return  90F - (float) MathHelper.wrapAngleTo180_double(Math.toDegrees(Math.atan2(xz, -dy)));
         }
 
         public float getYaw() {
             double dx = x2 - x1;
             double dz = z2 - z1;
-            return (float) -MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(dx, dz)));
+            return (float) -MathHelper.wrapAngleTo180_double(Math.toDegrees(Math.atan2(dx, dz)));
         }
 
         public double dotProduct(Vec3D vec) {

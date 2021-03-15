@@ -3,7 +3,6 @@ package xyz.wagyourtail.webdoclet;
 import com.sun.javadoc.*;
 import xyz.wagyourtail.Pair;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -122,7 +121,7 @@ public class WebParser {
         return builder;
     }
     
-    public static Pair<String, Boolean> getURL(ClassDoc currentClass, @Nullable Type type, @Nullable MemberDoc method) {
+    public static Pair<String, Boolean> getURL(ClassDoc currentClass, Type type, MemberDoc method) {
         if (type != null) {
             if (type.isPrimitive()) return new Pair<>("", false);
             String pkg = type.asClassDoc().containingPackage().name();

@@ -1,12 +1,12 @@
 package xyz.wagyourtail.jsmacros.client.api.sharedinterfaces;
 
-import net.minecraft.client.gui.Drawable;
 import xyz.wagyourtail.jsmacros.client.api.helpers.ItemStackHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon.Image;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon.Item;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon.Rect;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon.Text;
+import xyz.wagyourtail.jsmacros.client.gui.elements.Drawable;
 import xyz.wagyourtail.jsmacros.core.MethodWrapper;
 
 import java.util.List;
@@ -305,6 +305,4 @@ public interface IDraw2D<T> {
      * @return self for chaining
      */
     T setOnFailInit(MethodWrapper<String, Object, Object> catchInit);
-    
-    void render();
 }

@@ -1,13 +1,14 @@
 package xyz.wagyourtail.jsmacros.client.api.classes;
 
-import net.minecraft.client.gui.screen.ingame.EnchantingScreen;
+import net.minecraft.client.gui.GuiEnchantment;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.inventory.ContainerEnchantment;
+import net.minecraft.util.ResourceLocation;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 
-public class EnchantInventory extends Inventory<EnchantingScreen> {
+public class EnchantInventory extends Inventory<GuiEnchantment> {
     
-    protected EnchantInventory(EnchantingScreen inventory) {
+    protected EnchantInventory(GuiEnchantment inventory) {
         super(inventory);
     }
     
@@ -15,7 +16,7 @@ public class EnchantInventory extends Inventory<EnchantingScreen> {
      * @return xp level required to do enchantments
      */
     public int[] getRequiredLevels() {
-        return inventory.getContainer().enchantmentPower;
+        return ((ContainerEnchantment)inventory.inventorySlots).enchantLevels;
     }
     
     /**
@@ -24,12 +25,21 @@ public class EnchantInventory extends Inventory<EnchantingScreen> {
     public TextHelper[] getEnchantments() {
         TextHelper[] enchants = new TextHelper[3];
         for (int j = 0; j < 3; ++j) {
-            Enchantment enchantment = Enchantment.byRawId(inventory.getContainer().enchantmentId[j]);
-            if ((enchantment) != null) {
-                enchants[j] = new TextHelper(enchantment.getName(inventory.getContainer().enchantmentLevel[j]));
+            Enchantment enchantment = Enchantment.getEnchantmentById(((ContainerEnchantment)inventory.inventorySlots).field_178151_h[j] & 255);
+            if (((ContainerEnchantment)inventory.inventorySlots).field_178151_h[j] > 0 && (enchantment) != null) {
+                enchants[j] = new TextHelper(enchantment.getTranslatedName((((ContainerEnchantment)inventory.inventorySlots).field_178151_h[j] & 65280) >> 8));
             }
         }
         return enchants;
+    }
+    
+    private static String getEnchantId(Enchantment enchantment) {
+        for (ResourceLocation id : Enchantment.func_181077_c()) {
+            if (Enchantment.getEnchantmentByLocation(id.toString()) == enchantment) {
+                return id.toString();
+            }
+        }
+        return null;
     }
     
     /**
@@ -38,9 +48,9 @@ public class EnchantInventory extends Inventory<EnchantingScreen> {
     public String[] getEnchantmentIds() {
         String[] enchants = new String[3];
         for (int j = 0; j < 3; ++j) {
-            Enchantment enchantment = Enchantment.byRawId(inventory.getContainer().enchantmentId[j]);
-            if ((enchantment) != null) {
-                enchants[j] = Registry.ENCHANTMENT.getId(enchantment).toString();
+            Enchantment enchantment =  Enchantment.getEnchantmentById(((ContainerEnchantment)inventory.inventorySlots).field_178151_h[j] & 255);
+            if (((ContainerEnchantment)inventory.inventorySlots).field_178151_h[j] >= 0 && (enchantment) != null) {
+                enchants[j] = getEnchantId(enchantment);
             }
         }
         return enchants;
@@ -50,7 +60,11 @@ public class EnchantInventory extends Inventory<EnchantingScreen> {
      * @return level of enchantments
      */
     public int[] getEnchantmentLevels() {
-        return inventory.getContainer().enchantmentLevel;
+        int[] list = new int[3];
+        for (int i = 0; i < 3; ++i) {
+            list[i] = (((ContainerEnchantment)inventory.inventorySlots).field_178151_h[i] & 65280) >> 8;
+        }
+        return list;
     }
     
     /**
@@ -60,9 +74,9 @@ public class EnchantInventory extends Inventory<EnchantingScreen> {
      * @return success
      */
     public boolean doEnchant(int index) {
-        assert mc.interactionManager != null;
-        if (inventory.getContainer().onButtonClick(mc.player, index)) {
-            mc.interactionManager.clickButton(syncId, index);
+        assert mc.playerController != null;
+        if (inventory.inventorySlots.enchantItem(mc.thePlayer, index)) {
+            mc.playerController.sendEnchantPacket(inventory.inventorySlots.windowId, index);
             return true;
         }
         return false;
