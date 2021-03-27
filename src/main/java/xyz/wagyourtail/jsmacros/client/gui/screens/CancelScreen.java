@@ -3,12 +3,11 @@ package xyz.wagyourtail.jsmacros.client.gui.screens;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
+import xyz.wagyourtail.jsmacros.client.gui.containers.RunningThreadContainer;
 import xyz.wagyourtail.jsmacros.client.gui.elements.Button;
 import xyz.wagyourtail.jsmacros.client.gui.elements.Scrollbar;
-import xyz.wagyourtail.jsmacros.client.gui.containers.RunningThreadContainer;
 import xyz.wagyourtail.jsmacros.core.Core;
 import xyz.wagyourtail.jsmacros.core.config.ScriptThreadWrapper;
 
@@ -20,7 +19,6 @@ public class CancelScreen extends BaseScreen {
     private int topScroll;
     private Scrollbar s;
     private final List<RunningThreadContainer> running = new ArrayList<>();
-
     public CancelScreen(Screen parent) {
         super(new LiteralText("Cancel"), parent);
     }
@@ -32,11 +30,11 @@ public class CancelScreen extends BaseScreen {
         running.clear();
         s = this.addButton(new Scrollbar(width - 12, 5, 8, height-10, 0, 0xFF000000, 0xFFFFFFFF, 1, this::onScrollbar));
         
-        this.addButton(new Button(0, this.height - 12, this.width / 12, 12, textRenderer, 0, 0xFF000000, 0x7FFFFFFF, 0xFFFFFF, new TranslatableText("jsmacros.back"), (btn) -> this.onClose()));
+        this.addButton(new Button(0, this.height - 12, this.width / 12, 12, font, 0, 0xFF000000, 0x7FFFFFFF, 0xFFFFFF, new TranslatableText("jsmacros.back"), (btn) -> this.onClose()));
     }
 
     public void addContainer(ScriptThreadWrapper t) {
-        running.add(new RunningThreadContainer(10, topScroll + running.size() * 15, width - 26, 13, textRenderer, this, t));
+        running.add(new RunningThreadContainer(10, topScroll + running.size() * 15, width - 26, 13, font, this, t));
         running.sort(new RTCSort());
         s.setScrollPages(running.size() * 15 / (double)(height - 20));
     }
@@ -73,14 +71,13 @@ public class CancelScreen extends BaseScreen {
     }
     
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        if (matrices == null) return;
-        this.renderBackground(matrices, 0);
+    public void render(int mouseX, int mouseY, float delta) {
+        this.renderBackground(0);
         List<ScriptThreadWrapper> tl = Core.instance.getThreads();
         
         for (RunningThreadContainer r : ImmutableList.copyOf(this.running)) {
             tl.remove(r.t);
-            r.render(matrices, mouseX, mouseY, delta);
+            r.render(mouseX, mouseY, delta);
         }
         
         for (ScriptThreadWrapper t : tl) {
@@ -88,14 +85,14 @@ public class CancelScreen extends BaseScreen {
         }
 
         for (AbstractButtonWidget b : ImmutableList.copyOf(this.buttons)) {
-            b.render(matrices, mouseX, mouseY, delta);
+            b.render(mouseX, mouseY, delta);
         }
     }
 
     @Override
     public void removed() {
-        assert client != null;
-        client.keyboard.enableRepeatEvents(false);
+        assert minecraft != null;
+        minecraft.keyboard.enableRepeatEvents(false);
     }
 
     @Override

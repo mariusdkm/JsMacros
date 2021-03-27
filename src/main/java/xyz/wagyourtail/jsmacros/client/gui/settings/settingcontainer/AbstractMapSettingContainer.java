@@ -2,9 +2,7 @@ package xyz.wagyourtail.jsmacros.client.gui.settings.settingcontainer;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import xyz.wagyourtail.jsmacros.client.gui.containers.MultiElementContainer;
@@ -25,7 +23,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractMapSettingContainer<T, U extends AbstractMapSettingContainer.MapSettingEntry<T>> extends AbstractSettingContainer {
     public SettingsOverlay.SettingField<Map<String, T>> setting;
-    public StringRenderable settingName;
+    public Text settingName;
     public final Map<String, U> map = new HashMap<>();
     public int topScroll = 0;
     public int totalHeight = 0;
@@ -101,7 +99,7 @@ public abstract class AbstractMapSettingContainer<T, U extends AbstractMapSettin
     @SuppressWarnings("unchecked")
     public void addSetting(SettingsOverlay.SettingField<?> setting) {
         this.setting = (SettingsOverlay.SettingField<Map<String, T>>) setting;
-        this.settingName = BaseScreen.trimmed(textRenderer, new TranslatableText(setting.option.translationKey()), width - 40);
+        this.settingName = new LiteralText(BaseScreen.trimmed(textRenderer, new TranslatableText(setting.option.translationKey()).asFormattedString(), width - 40));
         map.clear();
         try {
             this.setting.get().forEach(this::addField);
@@ -111,9 +109,9 @@ public abstract class AbstractMapSettingContainer<T, U extends AbstractMapSettin
     }
     
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        textRenderer.draw(matrices, settingName, x + width / 2F - textRenderer.getWidth(settingName) / 2F + 20, y + 1, 0xFFFFFF);
-        fill(matrices, x, y + 10, x+width,y + 11,0xFFFFFFFF);
+    public void render(int mouseX, int mouseY, float delta) {
+        textRenderer.draw(settingName.asFormattedString(), x + width / 2F - textRenderer.getStringWidth(settingName.asFormattedString()) / 2F + 20, y + 1, 0xFFFFFF);
+        fill(x, y + 10, x+width,y + 11,0xFFFFFFFF);
     }
     
     public static abstract class MapSettingEntry<T> extends MultiElementContainer<AbstractMapSettingContainer<T, MapSettingEntry<T>>> {
@@ -184,7 +182,7 @@ public abstract class AbstractMapSettingContainer<T, U extends AbstractMapSettin
         }
         
         @Override
-        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        public void render(int mouseX, int mouseY, float delta) {
         
         }
     }

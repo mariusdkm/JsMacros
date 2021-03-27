@@ -10,10 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,8 +53,8 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     @Shadow public int width;
     @Shadow public int height;
     @Shadow @Final protected Text title;
-    @Shadow protected MinecraftClient client;
-    @Shadow protected TextRenderer textRenderer;
+    @Shadow protected MinecraftClient minecraft;
+    @Shadow protected TextRenderer font;
     @Shadow @Final protected List<Element> children;
     
     @Shadow protected abstract <T extends AbstractButtonWidget> T addButton(T button);
@@ -301,7 +298,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     @Override
     public ButtonWidgetHelper<?> addButton(int x, int y, int width, int height, String text,
         MethodWrapper<ButtonWidgetHelper<?>, IScreen, Object> callback) {
-        ButtonWidget button = new ButtonWidget(x, y, width, height, new LiteralText(text), (btn) -> {
+        ButtonWidget button = new ButtonWidget(x, y, width, height, text, (btn) -> {
             try {
                 callback.accept(new ButtonWidgetHelper<>(btn), this);
             } catch (Exception e) {
@@ -328,7 +325,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     @Override
     public TextFieldWidgetHelper addTextInput(int x, int y, int width, int height, String message,
         MethodWrapper<String, IScreen, Object> onChange) {
-        TextFieldWidget field = new TextFieldWidget(this.textRenderer, x, y, width, height, new LiteralText(message));
+        TextFieldWidget field = new TextFieldWidget(this.font, x, y, width, height, message);
         if (onChange != null) {
             field.setChangedListener(str -> {
                 try {
@@ -411,17 +408,15 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     
     @Override
     public IScreen reloadScreen() {
-        client.openScreen((Screen) (Object) this);
+        minecraft.openScreen((Screen) (Object) this);
         return this;
     }
 
     @Inject(at = @At("RETURN"), method = "render")
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo info) {
-        if (matrices == null) return;
-        
+    public void render(int mouseX, int mouseY, float delta, CallbackInfo info) {
         synchronized (elements) {
             for (Drawable element : elements) {
-                element.render(matrices, mouseX, mouseY, delta);
+                element.render(mouseX, mouseY, delta);
             }
         }
     }
@@ -480,7 +475,7 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
         synchronized (elements) {
         elements.clear();
         }
-        client.keyboard.enableRepeatEvents(true);
+        minecraft.keyboard.enableRepeatEvents(true);
         if (onInit != null) {
             try {
                 onInit.accept(this);
@@ -507,9 +502,9 @@ public abstract class MixinScreen extends AbstractParentElement implements IScre
     }
     
     //TODO: switch to enum extention with mixin 9.0 or whenever Mumfrey gets around to it
-    @Inject(at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false), method = "handleTextClick", cancellable = true)
-    public void handleCustomClickEvent(Style style, CallbackInfoReturnable<Boolean> cir) {
-        ClickEvent clickEvent = style.getClickEvent();
+    @Inject(at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false), method = "handleComponentClicked", cancellable = true)
+    public void handleCustomClickEvent(Text t, CallbackInfoReturnable<Boolean> cir) {
+        ClickEvent clickEvent = t.getStyle().getClickEvent();
         if (clickEvent instanceof CustomClickEvent) {
             ((CustomClickEvent) clickEvent).getEvent().run();
             cir.setReturnValue(true);

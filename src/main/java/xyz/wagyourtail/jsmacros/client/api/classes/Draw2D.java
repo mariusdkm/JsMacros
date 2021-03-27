@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
 import xyz.wagyourtail.jsmacros.client.api.helpers.ItemStackHelper;
 import xyz.wagyourtail.jsmacros.client.api.helpers.TextHelper;
 import xyz.wagyourtail.jsmacros.client.api.sharedclasses.RenderCommon;
@@ -369,13 +368,11 @@ public class Draw2D extends DrawableHelper implements IDraw2D<Draw2D> {
     }
 
     @Override
-    public void render(MatrixStack matrixStack) {
-        if (matrixStack == null) return;
-        
+    public void render() {
         RenderSystem.pushMatrix();
         synchronized (elements) {
             for (Drawable e : elements) {
-                e.render(matrixStack, 0, 0, 0);
+                e.render(0, 0, 0);
             }
         }
         RenderSystem.popMatrix();

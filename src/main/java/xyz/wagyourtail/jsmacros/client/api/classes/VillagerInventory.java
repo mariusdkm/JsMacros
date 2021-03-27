@@ -31,35 +31,35 @@ public class VillagerInventory extends Inventory<MerchantScreen> {
      * @return
      */
     public int getExperience() {
-        return inventory.getScreenHandler().getExperience();
+        return inventory.getContainer().getExperience();
     }
     
     /**
      * @return
      */
     public int getLevelProgress() {
-        return inventory.getScreenHandler().getLevelProgress();
+        return inventory.getContainer().getLevelProgress();
     }
     
     /**
      * @return
      */
     public int getMerchantRewardedExperience() {
-        return inventory.getScreenHandler().getTraderRewardedExperience();
+        return inventory.getContainer().getTraderRewardedExperience();
     }
     
     /**
      * @return
      */
     public boolean canRefreshTrades() {
-        return inventory.getScreenHandler().canRefreshTrades();
+        return inventory.getContainer().canRefreshTrades();
     }
     
     /**
      * @return
      */
     public boolean isLeveled() {
-        return inventory.getScreenHandler().isLeveled();
+        return inventory.getContainer().isLevelled();
     }
     
     /**
@@ -68,7 +68,7 @@ public class VillagerInventory extends Inventory<MerchantScreen> {
     public List<TradeOfferHelper> getTrades() {
         List<TradeOfferHelper> offers = new LinkedList<>();
         int i = -1;
-        for (TradeOffer offer : inventory.getScreenHandler().getRecipes()) {
+        for (TradeOffer offer : inventory.getContainer().getRecipes()) {
             offers.add(new TradeOfferHelper(offer, ++i, this));
         }
         return offers;

@@ -3,7 +3,6 @@ package xyz.wagyourtail.jsmacros.client.api.helpers;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import xyz.wagyourtail.jsmacros.client.JsMacros;
 import xyz.wagyourtail.jsmacros.core.helpers.BaseHelper;
@@ -72,7 +71,7 @@ public class ButtonWidgetHelper<T extends AbstractButtonWidget> extends BaseHelp
      * @return
      */
     public ButtonWidgetHelper<T> setLabel(String label) {
-        base.setMessage(new LiteralText(label));
+        base.setMessage(label);
         return this;
     }
     
@@ -86,7 +85,7 @@ public class ButtonWidgetHelper<T extends AbstractButtonWidget> extends BaseHelp
      * @return
      */
     public ButtonWidgetHelper<T> setLabel(TextHelper helper) {
-        base.setMessage(helper.getRaw());
+        base.setMessage(helper.getRaw().asFormattedString());
         return this;
     }
     
@@ -96,7 +95,7 @@ public class ButtonWidgetHelper<T extends AbstractButtonWidget> extends BaseHelp
      * @return current button text.
      */
     public TextHelper getLabel() {
-        return new TextHelper(base.getMessage());
+        return new TextHelper(new LiteralText(base.getMessage()));
     }
     
     /**
@@ -165,8 +164,8 @@ public class ButtonWidgetHelper<T extends AbstractButtonWidget> extends BaseHelp
     }
     
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        base.render(matrices, mouseX, mouseY, delta);
+    public void render(int mouseX, int mouseY, float delta) {
+        base.render(mouseX, mouseY, delta);
     }
     
 }
