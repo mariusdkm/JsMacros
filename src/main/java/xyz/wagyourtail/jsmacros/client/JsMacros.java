@@ -9,8 +9,12 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +47,14 @@ public class JsMacros {
             e.printStackTrace();
         }
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onInitializeClient);
-        FakeFabricLoader.instance.loadEntries();
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> this::onConfig);
+        
+    }
+    
+    public Screen onConfig(MinecraftClient mc, Screen parent) {
+        prevScreen.setParent(parent);
+        return prevScreen;
+        
     }
     
     public void onInitializeClient(FMLClientSetupEvent init) {

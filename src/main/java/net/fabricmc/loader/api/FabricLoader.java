@@ -2,6 +2,7 @@ package net.fabricmc.loader.api;
 
 import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.api.IEnvironment;
+import net.minecraftforge.fml.loading.FMLLoader;
 import xyz.wagyourtail.jsmacros.client.FakeFabricLoader;
 
 import java.io.File;
@@ -14,19 +15,19 @@ public interface FabricLoader {
     }
     
     default File getConfigDirectory() {
-        return new File(Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.GAMEDIR.get()).get().toFile(), "config");
+        return new File(FMLLoader.getGamePath().toFile(), "config");
     }
     
     default File getGameDirectory() {
-        return Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.GAMEDIR.get()).get().toFile();
+        return FMLLoader.getGamePath().toFile();
     }
     
     default Path getGameDir() {
-        return Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.GAMEDIR.get()).get();
+        return FMLLoader.getGamePath();
     }
     
     default Path getConfigDir() {
-        return new File(Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.GAMEDIR.get()).get().toFile(), "config").toPath();
+        return new File(FMLLoader.getGamePath().toFile(), "config").toPath();
     }
     
     boolean isModLoaded(String modid);

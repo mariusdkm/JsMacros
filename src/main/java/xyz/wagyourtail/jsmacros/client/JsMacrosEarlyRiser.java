@@ -3,6 +3,7 @@ package xyz.wagyourtail.jsmacros.client;
 import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.TransformingClassLoader;
 import cpw.mods.modlauncher.api.IEnvironment;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,7 +49,7 @@ public class JsMacrosEarlyRiser implements IMixinConnector {
     @Override
     public void connect() {
         try {
-            new FakeFabricLoader(new File(Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.GAMEDIR.get()).get().toFile(), "mods/jsmacros"));
+            new FakeFabricLoader(new File(FMLLoader.getGamePath().toFile(), "mods/jsmacros"));
             MixinBootstrap.init();
             MixinEnvironment.getDefaultEnvironment().setSide(MixinEnvironment.Side.CLIENT);
             FakeFabricLoader.instance.loadMixins();
@@ -61,23 +62,14 @@ public class JsMacrosEarlyRiser implements IMixinConnector {
     }
     
     public void loadManifestDeps() throws IOException, InvocationTargetException, IllegalAccessException {
-        Class<JsMacrosEarlyRiser> clazz = JsMacrosEarlyRiser.class;
-        String className = clazz.getSimpleName() + ".class";
-        String classPath = clazz.getResource(className).toString();
-        if (!classPath.startsWith("jar")) {
-            // Class not from JAR
-            return;
-        }
-        String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1) +
-            "/META-INF/MANIFEST.MF";
-        Manifest manifest = new Manifest(new URL(manifestPath).openStream());
+        Manifest manifest = FMLLoader.getLoadingModList().getModFileById("jsmacros").getManifest().orElseThrow(() -> new RuntimeException("Failed to find manifest, this is normal in the dev environment"));
         Attributes attr = manifest.getMainAttributes();
         String[] value = attr.getValue("JsMacrosDeps").split("\\s+");
         extract(value);
     }
     
     public void extract(String[] mods) throws IOException, InvocationTargetException, IllegalAccessException {
-        File modFolder = new File(Launcher.INSTANCE.environment().getProperty(IEnvironment.Keys.GAMEDIR.get()).get().toFile(), "mods/jsmacros/dependencies");
+        File modFolder = new File(FMLLoader.getGamePath().toFile(), "mods/jsmacros/dependencies");
         if (!modFolder.exists() && !modFolder.mkdirs()) throw new RuntimeException("failed to create deps folder dir");
         for (String mod : mods) {
             File modfile = new File(modFolder, mod);
