@@ -8,7 +8,7 @@ buildscript {
 
 plugins {
 	id 'java'
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'forgified-fabric-loom' version '0.6-SNAPSHOT'
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,37 +19,26 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	flatDir {
-		dirs 'libs'
-	}
     mavenCentral()
     maven {
         name "Modmuss50 Repository"
         url 'https://maven.fabricmc.net/'
     }
     maven { url 'https://jitpack.io' }
-
 }
 
 minecraft {
 }
 
+loom {
+	mixinConfig "jsmacros.mixins.json"
+}
+
 dependencies {
+	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	
-	//partial fabric api
-	modImplementation "net.fabricmc.fabric-api:fabric-api-base:${project.api_base_version}"
-	include "net.fabricmc.fabric-api:fabric-api-base:${project.api_base_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-lifecycle-events-v1:${project.lifecycle_events_version}"
-    include "net.fabricmc.fabric-api:fabric-lifecycle-events-v1:${project.lifecycle_events_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-key-binding-api-v1:${project.key_bind_api_version}"
-    include "net.fabricmc.fabric-api:fabric-key-binding-api-v1:${project.key_bind_api_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-resource-loader-v0:${resource_loader_version}"
-    include "net.fabricmc.fabric-api:fabric-resource-loader-v0:${project.resource_loader_version}"
-
 
 	implementation "org.graalvm.sdk:graal-sdk:${project.graal_version}"
 	implementation "org.graalvm.js:js:${project.graal_version}"
@@ -71,27 +60,13 @@ dependencies {
 	
 	//nullable not defined so...
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
-	
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
-
-	modImplementation("io.github.prospector:modmenu:${project.mod_menu_version}") {
-        transitive = false
-    }
-	//modImplementation('com.github.chocohead:optifabric:llama-SNAPSHOT')
 }
 
 processResources {
-	inputs.property "version", project.version
-
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
+	filesMatching("META-INF/mods.toml") {
 		expand "version": project.version
 	}
-
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
-	}
+	inputs.property "META-INF/mods.toml", project.version
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
