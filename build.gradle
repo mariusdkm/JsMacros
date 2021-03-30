@@ -86,6 +86,12 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 jar {
 	from "LICENSE"
+	manifest {
+		attributes([
+				'MixinConnector': 'xyz.wagyourtail.jsmacros.client.JsMacrosEarlyRiser',
+				'JsMacrosDeps': configurations.include.files.collect { it.name }.join(" ")
+		])
+	}
 }
 
 javadoc {
